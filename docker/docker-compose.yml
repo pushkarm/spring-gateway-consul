@@ -1,0 +1,23 @@
+version: '3.9'
+services:
+  consul-server:
+    image: consul:1.15.4
+    container_name: consul-server
+    ports:
+      - '8500:8500'
+  consul-api-gateway:
+    image: consul-api-gateway
+    container_name: consul-api-gateway
+    environment:
+      SVC_API_GATEWAY_SERVER_PORT: 8080
+      CONSUL_HOST: consul-server
+      CONSUL_PORT: 8500
+    ports:
+      - '8080:8080'
+  consul-user-service:
+    image: consul-user-service
+    container_name: consul-user-service
+    environment:
+      USER_SVC_SERVER_PORT: 9091
+      CONSUL_HOST: consul-server
+      CONSUL_PORT: 8500
